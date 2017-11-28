@@ -67,6 +67,7 @@ export default {
         }
       }).filter(item => item)
 
+      this.btnBlur()
       this.startUpload()
 
       e.target.value = '' // clear file input select
