@@ -101,7 +101,7 @@ if (process.env.NODE_ENV === 'production') {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
     filename: 'index.js',
-    library: 'VuePopup',
+    library: 'VueSimpleFileUpload',
     libraryTarget: 'umd',
     umdNamedDefine: true
   }
