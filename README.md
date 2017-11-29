@@ -73,7 +73,7 @@ export default {
   * 'choose file' botton content
   * type **String**
   * required **No**
-  * default **Choose File**
+  * default **'Choose File'**
 * **className:**
   * 'choose file' botton class name
   * type **String**  ps:if you have multiple className, use space split them
