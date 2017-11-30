@@ -16,7 +16,8 @@ export default {
         className: 'btn-solid',
         btnContent: 'Choose File',
         url: '/api/files/upload',
-        accept: 'image/png'
+        accept: 'image/png, image/jpeg',
+        multiple: true
       },
       imageUrl: ''
     }

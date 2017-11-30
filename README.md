@@ -84,8 +84,13 @@ export default {
   * type **String**  ps:same as the 'accept' attribute in \<input\>
   * required **No**
   * default **'\*'**
+* **multiple**
+  * multiple file upload
+  * type **Boolean**
+  * required **No**
+  * default **false**
 
-// 2017-11-28 todo: multiple file upload and upload abort.
+// 2017-11-30 todo: upload abort.
 
 #### 4. progress-update
 
