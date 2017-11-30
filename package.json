@@ -1,7 +1,7 @@
 {
   "name": "vue-simple-file-upload",
   "description": "a simple vue file upload component",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": "Ash",
   "license": "MIT",
   "scripts": {
