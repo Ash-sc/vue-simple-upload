@@ -114,6 +114,10 @@ export default {
             }
             this.uploaded(resp, 'success')
           } else if (xhrObj[id].readyState === 4) { // upload req fail
+
+            // user abort upload req
+            if (xhrObj[id].status === 0) return false
+
             const resp = {
               fileName: fileInfo.name,
               id,
@@ -165,6 +169,28 @@ export default {
       this.fileInfoList = fileInfoList
 
       this.$emit('progress-update', fileInfoList)
+    },
+
+    // abort file upload
+    abort(id = 'all') {
+      if (id === 'all') {
+        this.fileInfoList.forEach(fileInfo => {
+          if (fileInfo.type === 'uploading') {
+            this.xhrObj[fileInfo.id].abort()
+            fileInfo.type = 'abort'
+            fileInfo.progress = ''
+            fileInfo.uploadSpeed = 0
+          }
+        })
+      } else {
+        const index = findIndex(this.fileInfoList, { id })
+        this.xhrObj[id].abort()
+        this.fileInfoList[index].type = 'abort'
+        this.fileInfoList[index].progress = ''
+        this.fileInfoList[index].uploadSpeed = 0
+      }
+
+      this.$emit('progress-update', this.fileInfoList)
     }
   }
 }
