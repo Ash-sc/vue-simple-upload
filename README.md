@@ -109,7 +109,7 @@ fileList example:
     progress // uploaded progress. eg: '15.01%'
     uploadSpeed // uploading speed. eg: '1001'(kb/s)
     type // uploading status, could be 'waiting', 'uploading', 'success' or 'fail' or 'abort'
-    id // an unique string, used for upload abort (TODO)
+    id // an unique string, used for upload abort
     response // upload requset response (if your file is uploading, this will be an empty Object)
   },
   ... // more fileList object if it's uploading multiple files
