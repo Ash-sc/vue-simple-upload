@@ -18,7 +18,6 @@ import VueSimpleUpload from 'vue-simple-file-upload'
 Vue.use(VueSimpleUpload)
 ...
 
-```
 <template>
   <div>
     <vue-simple-upload :options="options" v-on:progress-update="progressUpdate">
@@ -78,7 +77,6 @@ export default {
   * required **No**
   * default **false**
 
-// 2017-11-30 todo: upload abort.
 
 #### 4. progress-update
 
@@ -92,7 +90,7 @@ It will be look like this blow:
     fileName // the first file name you choose.
     progress // uploaded progress. eg: '15.01%'
     uploadSpeed // upload speed. eg: '1001'(kb/s)
-    type // uploading type, could be 'waiting', 'uploading', 'success' or 'fail'
+    type // uploading type, could be 'waiting', 'uploading', 'success' or 'fail' or 'abort'
     id // an unique string, for uploading abort (todo)
     response // upload requset response (if your file is uploading, this would be an empty Object)
   },
@@ -100,4 +98,28 @@ It will be look like this blow:
 ]
 ```
 
+
+#### 5. abort
+
+You can abort uploading request by using ```this.$refs.XXX.abort()```
+
+eg:
+
+```
+<vue-simple-upload :options="options" v-on:progress-update="progressUpdate" ref="fileUploadSection">
+</vue-simple-upload>
+
+...
+methods: {
+  ...
+  abort(id) {
+    this.$refs.fileUploadSection.abort() // abort all files which are uploading
+    this.$refs.fileUploadSection.abort(id) // abort one file by fileInfoList.id
+  }
+  ...
+}
+
+```
+
+// 2017-12-01 todo: custome start 、 drag upload.
 

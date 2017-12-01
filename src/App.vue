@@ -46,11 +46,6 @@ export default {
 
   methods: {
     progressUpdate(fileInfoList) {
-      console.log("upload speed（kb/s）：", fileInfoList[0].uploadSpeed)
-      if (fileInfoList[0].type === 'success') {
-        this.imageUrl = JSON.parse(fileInfoList[0].response).url
-      }
-      console.log(fileInfoList[0].type)
       this.fileInfoList = fileInfoList
     },
 

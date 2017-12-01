@@ -172,8 +172,9 @@ export default {
     },
 
     // abort file upload
-    abort(id = 'all') {
-      if (id === 'all') {
+    abort(id = 'all') { // default argument
+
+      if (id === 'all') { // abort all files which are uploading
         this.fileInfoList.forEach(fileInfo => {
           if (fileInfo.type === 'uploading') {
             this.xhrObj[fileInfo.id].abort()
@@ -182,7 +183,7 @@ export default {
             fileInfo.uploadSpeed = 0
           }
         })
-      } else {
+      } else { // abort one file by id
         const index = findIndex(this.fileInfoList, { id })
         this.xhrObj[id].abort()
         this.fileInfoList[index].type = 'abort'
