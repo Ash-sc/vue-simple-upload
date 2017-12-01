@@ -3,6 +3,8 @@ a simple vue file upload component use XHR
 
 > vue file upload component use XHR
 
+> demo: [http://ashshen.cc:6655/#/vue-simple-file-upload](http://ashshen.cc:6655/#/vue-simple-file-upload)
+
 
 ### 1. Install
 
