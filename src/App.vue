@@ -29,7 +29,11 @@
 </template>
 
 <script>
+import { VueSimpleUpload } from './lib/index.js'
+
 export default {
+  components: { VueSimpleUpload },
+
   data() {
     return {
       options: {

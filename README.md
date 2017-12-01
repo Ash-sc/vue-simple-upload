@@ -14,9 +14,25 @@ npm install vue-simple-file-upload
 #### 2. Usage
 
 ```
+# global inject
 import VueSimpleUpload from 'vue-simple-file-upload'
 Vue.use(VueSimpleUpload)
 ...
+```
+
+```
+# component inject
+...
+<script>
+import { VueSimpleUpload } from 'vue-simple-file-upload'
+
+export default {
+  components: { VueSimpleUpload },
+  ...
+}
+```
+
+```
 
 <template>
   <div>
