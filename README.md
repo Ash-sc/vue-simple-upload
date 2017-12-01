@@ -1,5 +1,5 @@
 # vue-simple-file-upload
-a simple vue file upload component use XHR
+a simple vue file upload component using XHR
 
 > vue file upload component use XHR
 
@@ -16,14 +16,14 @@ npm install vue-simple-file-upload
 #### 2. Usage
 
 ```
-# global inject
+# global injection
 import VueSimpleUpload from 'vue-simple-file-upload'
 Vue.use(VueSimpleUpload)
 ...
 ```
 
 ```
-# component inject
+# component injection
 ...
 <script>
 import { VueSimpleUpload } from 'vue-simple-file-upload'
@@ -81,7 +81,7 @@ export default {
   * default **'Choose File'**
 * **className:**
   * 'choose file' botton class name
-  * type **String**  ps:if you have multiple className, use space split them
+  * type **String**  ps:multiple className can be added, use space split them
   * required **No**
   * default **''**
 * **accept**
@@ -90,36 +90,36 @@ export default {
   * required **No**
   * default **'\*'**
 * **multiple**
-  * multiple file upload
+  * multiple files upload
   * type **Boolean**
   * required **No**
   * default **false**
 
 
-#### 4. progress-update
+#### 4. dynamic upload progress
 
-I use an '$emit' function to send upload message to parent component.And this function has just one argument : fileList (an Array)
+'$emit' function will send the upload message to its parent component, and this function takes one parameter : fileList (Array)
 
-It will be look like this blow:
+fileList example:
 ```
 [
   {
     fileInfo: File // the first file you choose.
-    fileName // the first file name you choose.
+    fileName // the name of first file you choose.
     progress // uploaded progress. eg: '15.01%'
-    uploadSpeed // upload speed. eg: '1001'(kb/s)
-    type // uploading type, could be 'waiting', 'uploading', 'success' or 'fail' or 'abort'
-    id // an unique string, for uploading abort (todo)
-    response // upload requset response (if your file is uploading, this would be an empty Object)
+    uploadSpeed // uploading speed. eg: '1001'(kb/s)
+    type // uploading status, could be 'waiting', 'uploading', 'success' or 'fail' or 'abort'
+    id // an unique string, used for upload abort (TODO)
+    response // upload requset response (if your file is uploading, this will be an empty Object)
   },
-  ... // more elements if you are uploading multiple files
+  ... // more fileList object if it's uploading multiple files
 ]
 ```
 
 
 #### 5. abort
 
-You can abort uploading request by using ```this.$refs.XXX.abort()```
+Abort the uploading request by using ```this.$refs.XXX.abort()```
 
 eg:
 
@@ -131,13 +131,13 @@ eg:
 methods: {
   ...
   abort(id) {
-    this.$refs.fileUploadSection.abort() // abort all files which are uploading
-    this.$refs.fileUploadSection.abort(id) // abort one file by fileInfoList.id
+    this.$refs.fileUploadSection.abort() // abort all uploading files
+    this.$refs.fileUploadSection.abort(id) // abort one uploading file by fileInfoList.id
   }
   ...
 }
 
 ```
 
-// 2017-12-01 todo: custome start 、 drag upload.
+// 2017-12-01 TODO: custome start 、 drag upload.
 
