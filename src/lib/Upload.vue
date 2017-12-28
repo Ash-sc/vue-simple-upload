@@ -26,17 +26,22 @@ export default {
 
   data() {
     return {
-      option: Object.assign({}, {
+      isFileSelectorOpen: false, // only allow one file selector dialog simultaneously
+      xhrObj: {}, // file uppload xhr requests
+      fileInfoList: [], // file info List
+      uploadedSize: {} // file uploaded size and time, for speed calculating
+    }
+  },
+
+  computed: {
+    option() {
+      return Object.assign({}, {
         url: '',
         formData: {},
         multiple: false,
         btnContent: 'Choose File',
         autoStart: true
-      }, this.options),
-      isFileSelectorOpen: false, // only allow one file selector dialog simultaneously
-      xhrObj: {}, // file uppload xhr requests
-      fileInfoList: [], // file info List
-      uploadedSize: {} // file uploaded size and time, for speed calculating
+      }, this.options)
     }
   },
 
