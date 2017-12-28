@@ -94,6 +94,11 @@ export default {
   * type **Boolean**
   * required **No**
   * default **false**
+* **autoStart**
+  * auto upload files after selected
+  * type **Boolean**
+  * required **No**
+  * default **true**
 
 
 #### 4. dynamic upload progress
@@ -138,6 +143,27 @@ methods: {
 }
 
 ```
+#### 6. custom Start    // 2017-12-28
 
-// 2017-12-01 TODO: custome start 、 drag upload.
+If setting "autoStart: false" in your config. You can custom start upload by "id" (default: "all")
+
+eg:
+
+
+```
+<vue-simple-upload :options="options" v-on:progress-update="progressUpdate" ref="fileUploadSection">
+</vue-simple-upload>
+
+...
+methods: {
+  ...
+  startUpload(id) {
+    this.$refs.fileUploadSection.startUpload() // start uploading all files which "type === 'waiting'"
+    this.$refs.fileUploadSection.startUpload(id) // start uploading file by fileInfoList.id
+  }
+  ...
+}
+
+
+// 2017-12-28 TODO: drag upload.
 

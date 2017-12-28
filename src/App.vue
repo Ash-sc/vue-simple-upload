@@ -12,7 +12,7 @@
           <span class="file-size">{{ parseInt(fileInfo.fileInfo.size / 1000, 10) }}kb</span>
           <span class="file-progress">{{ fileInfo.progress }}</span>
           <span class="operate">
-            <i class="fa fa-arrow-up fl-l" v-if="fileInfo.type === 'waiting'"></i>
+            <i class="fa fa-arrow-up fl-l" v-if="fileInfo.type === 'waiting'" @click="startUpload(fileInfo.id)"></i>
             <i class="fa fa-check fl-r" v-if="fileInfo.type === 'success'"></i>
             <i class="fa fa-times fl-r" v-if="fileInfo.type === 'fail' || fileInfo.type === 'abort'"></i>
             <i class="fa fa-trash fl-r" v-if="fileInfo.type === 'uploading'" @click="abortUpload(fileInfo.id)"></i>
@@ -41,7 +41,8 @@ export default {
         btnContent: 'Choose File',
         url: '/api/files/upload',
         accept: '*',
-        multiple: true
+        multiple: true,
+        autoStart: false
       },
       imageUrl: '',
       fileInfoList: []
@@ -55,6 +56,10 @@ export default {
 
     abortUpload(id) {
       this.$refs.fileUploadComp.abort(id)
+    },
+
+    startUpload(id) {
+      this.$refs.fileUploadComp.startUpload(id)
     }
   }
 }

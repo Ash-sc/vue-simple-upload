@@ -2,14 +2,14 @@
   <div
     class="file-upload-body"
   >
-    <button @click="chooseFile" @blur="btnBlur" :class="options.className">{{ options.btnContent }}</button>
+    <button @click="chooseFile" @blur="btnBlur" :class="option.className">{{ option.btnContent }}</button>
     <input
       type="file"
       ref="fileSelector"
       class="file-selector"
       @change="fileChange"
-      :multiple="options.multiple"
-      :accept="options.accept || '*'"
+      :multiple="option.multiple"
+      :accept="option.accept || '*'"
     />
   </div>
 </template>
@@ -20,22 +20,25 @@ import findIndex from 'lodash/findIndex'
 export default {
   props: {
     options: {
-      type: Object,
-      default: () => ({
-        url: '',
-        formData: {},
-        multiple: false,
-        btnContent: 'Choose File'
-      })
+      type: Object
     }
   },
 
-  data: () =>({
-    isFileSelectorOpen: false, // only allow one file selector dialog simultaneously
-    xhrObj: {}, // file uppload xhr requests
-    fileInfoList: [], // file info List
-    uploadedSize: {} // file uploaded size and time, for speed calculating
-  }),
+  data() {
+    return {
+      option: Object.assign({}, {
+        url: '',
+        formData: {},
+        multiple: false,
+        btnContent: 'Choose File',
+        autoStart: true
+      }, this.options),
+      isFileSelectorOpen: false, // only allow one file selector dialog simultaneously
+      xhrObj: {}, // file uppload xhr requests
+      fileInfoList: [], // file info List
+      uploadedSize: {} // file uploaded size and time, for speed calculating
+    }
+  },
 
   methods: {
     // click choose file btn.
@@ -52,7 +55,7 @@ export default {
 
     // user file change
     fileChange(e) {
-      const accept = this.options.accept
+      const accept = this.option.accept
 
       this.fileInfoList = [...e.target.files].map(item => {
         // make sure to upload the correct file type
@@ -68,15 +71,19 @@ export default {
       }).filter(item => item)
 
       this.btnBlur()
-      this.startUpload()
+      if (this.option.autoStart) {
+        this.startUpload()
+      } else {
+        this.$emit('progress-update', this.fileInfoList)
+      }
 
       e.target.value = '' // clear file input select
     },
 
     // start upload
-    startUpload() {
+    startUpload(id = 'all') {
       this.fileInfoList.forEach(item => {
-        if (item.type === 'waiting') {
+        if (item.type === 'waiting' && (id === 'all' || id === item.id )) {
           this.xhrUpload(item.fileInfo, item.id)
         }
       })
@@ -84,7 +91,7 @@ export default {
 
     // xhr request
     xhrUpload(fileInfo, id) {
-      const userFormData = this.options.formData || {} // other custom form data.
+      const userFormData = this.option.formData || {} // other custom form data.
       const { xhrObj } = this
 
       // define a new formData for xhr
@@ -131,7 +138,7 @@ export default {
       }
 
       // start xhr
-      xhrObj[id].open('POST', this.options.url, true)
+      xhrObj[id].open('POST', this.option.url, true)
       xhrObj[id].send(formData)
     },
 
