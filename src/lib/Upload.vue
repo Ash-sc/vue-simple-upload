@@ -2,7 +2,12 @@
   <div
     class="file-upload-body"
   >
-    <button @click="chooseFile" @blur="btnBlur" :class="option.className">{{ option.btnContent }}</button>
+    <button
+      @click="chooseFile"
+      @blur="btnBlur"
+      :class="option.className"
+      type="button"
+    >{{ option.btnContent }}</button>
     <input
       type="file"
       ref="fileSelector"
