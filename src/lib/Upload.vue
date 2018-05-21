@@ -34,19 +34,25 @@ export default {
       isFileSelectorOpen: false, // only allow one file selector dialog simultaneously
       xhrObj: {}, // file uppload xhr requests
       fileInfoList: [], // file info List
-      uploadedSize: {} // file uploaded size and time, for speed calculating
+      uploadedSize: {}, // file uploaded size and time, for speed calculating
+      oversizedFiles: []
     }
   },
 
   computed: {
     option() {
-      return Object.assign({}, {
-        url: '',
-        formData: {},
-        multiple: false,
-        btnContent: 'Choose File',
-        autoStart: true
-      }, this.options)
+      return Object.assign(
+        {},
+        {
+          url: '',
+          formData: {},
+          multiple: false,
+          btnContent: 'Choose File',
+          autoStart: true,
+          size: 0
+        },
+        this.options
+      )
     }
   },
 
@@ -65,23 +71,42 @@ export default {
 
     // user file change
     fileChange(e) {
-      const accept = this.option.accept
+      const { accept, size } = this.option
 
-      this.fileInfoList = [...e.target.files].map(item => {
-        // make sure to upload the correct file type
-        if (!accept || accept === '*' || (accept && accept.indexOf(item.type) >= 0)) {
-          return {
-            fileInfo: item,
-            fileName: item.name,
-            progress: '0.00%',
-            type: 'waiting', // init type: 'waiting'
-            id: new Date().getTime() + '' + parseInt(Math.random() * 10000, 10)
+      this.oversizedFiles = []
+      this.fileInfoList = [...e.target.files]
+        .map(item => {
+          // make sure to upload the correct file type && file size
+          if (size && item.size > size) {
+            this.oversizedFiles.push(item.name)
+          } else if (
+            !accept ||
+            accept === '*' ||
+            (accept && accept.indexOf(item.type) >= 0)
+          ) {
+            return {
+              fileInfo: item,
+              fileName: item.name,
+              progress: '0.00%',
+              type: 'waiting', // init type: 'waiting'
+              id:
+                new Date().getTime() + '' + parseInt(Math.random() * 10000, 10)
+            }
           }
-        }
-      }).filter(item => item)
+        })
+        .filter(item => item)
 
       this.btnBlur()
+
+      // has oversized files
+      if (this.oversizedFiles.length) {
+        this.$emit('file-size-error', [...this.oversizedFiles])
+      }
+
       if (this.option.autoStart) {
+        if (this.fileInfoList.some(item => item.type === 'error')) {
+          this.$emit('progress-update', this.fileInfoList)
+        }
         this.startUpload()
       } else {
         this.$emit('progress-update', this.fileInfoList)
@@ -93,7 +118,7 @@ export default {
     // start upload
     startUpload(id = 'all') {
       this.fileInfoList.forEach(item => {
-        if (item.type === 'waiting' && (id === 'all' || id === item.id )) {
+        if (item.type === 'waiting' && (id === 'all' || id === item.id)) {
           this.xhrUpload(item.fileInfo, item.id)
         }
       })
@@ -106,7 +131,7 @@ export default {
 
       // define a new formData for xhr
       const formData = new FormData()
-      Object.keys(userFormData).forEach(key=> {
+      Object.keys(userFormData).forEach(key => {
         formData.append([key], userFormData[key])
       })
       formData.append('file', fileInfo)
@@ -123,14 +148,19 @@ export default {
       xhrObj[id].onreadystatechange = () => {
         try {
           // upload req success
-          if (xhrObj[id].readyState === 4 && xhrObj[id].status >= 200 && xhrObj[id].status < 400) {
+          if (
+            xhrObj[id].readyState === 4 &&
+            xhrObj[id].status >= 200 &&
+            xhrObj[id].status < 400
+          ) {
             const resp = {
               fileName: fileInfo.name,
               id,
-              message: xhrObj[id].responseText,
+              message: xhrObj[id].responseText
             }
             this.uploaded(resp, 'success')
-          } else if (xhrObj[id].readyState === 4) { // upload req fail
+          } else if (xhrObj[id].readyState === 4) {
+            // upload req fail
 
             // user abort upload req
             if (xhrObj[id].status === 0) return false
@@ -138,12 +168,15 @@ export default {
             const resp = {
               fileName: fileInfo.name,
               id,
-              message: xhrObj[id].responseText,
+              message: xhrObj[id].responseText
             }
             this.uploaded(resp, 'fail')
           }
         } catch (e) {
-          this.uploaded({ fileName: fileInfo.name, id, message: e.message }, 'error')
+          this.uploaded(
+            { fileName: fileInfo.name, id, message: e.message },
+            'error'
+          )
         }
       }
 
@@ -155,11 +188,21 @@ export default {
     // refresh upload progress and emit to parent
     uploading(progress, id, fileInfo) {
       const { fileInfoList, uploadedSize } = this
-      const uploadSpeed = !uploadedSize[id] ? 0 : parseInt((progress.loaded - uploadedSize[id].loaded) / (new Date().getTime() - uploadedSize[id].time), 10)
+      const uploadSpeed = !uploadedSize[id]
+        ? 0
+        : parseInt(
+            (progress.loaded - uploadedSize[id].loaded) /
+              (new Date().getTime() - uploadedSize[id].time),
+            10
+          )
       const index = findIndex(fileInfoList, { id })
 
       // refresh file info
-      fileInfoList[index].progress = `${((progress.loaded / progress.total) * 100).toFixed(2)}%`
+      fileInfoList[index].progress = `${(
+        progress.loaded /
+        progress.total *
+        100
+      ).toFixed(2)}%`
       fileInfoList[index].type = 'uploading'
       fileInfoList[index].uploadSpeed = uploadSpeed < 0 ? 0 : uploadSpeed
 
@@ -167,7 +210,7 @@ export default {
       uploadedSize[id] = {
         time: new Date().getTime(),
         loaded: progress.loaded
-      };
+      }
 
       this.fileInfoList = fileInfoList
       this.uploadedSize = uploadedSize
@@ -189,9 +232,11 @@ export default {
     },
 
     // abort file upload
-    abort(id = 'all') { // default argument
+    abort(id = 'all') {
+      // default argument
 
-      if (id === 'all') { // abort all files which are uploading
+      if (id === 'all') {
+        // abort all files which are uploading
         this.fileInfoList.forEach(fileInfo => {
           if (fileInfo.type === 'uploading') {
             this.xhrObj[fileInfo.id].abort()
@@ -200,7 +245,8 @@ export default {
             fileInfo.uploadSpeed = 0
           }
         })
-      } else { // abort one file by id
+      } else {
+        // abort one file by id
         const index = findIndex(this.fileInfoList, { id })
         this.xhrObj[id].abort()
         this.fileInfoList[index].type = 'abort'
@@ -219,7 +265,7 @@ export default {
   display: inline-block;
 
   .file-selector {
-    display: none!important;
+    display: none !important;
   }
 }
 </style>

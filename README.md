@@ -1,17 +1,16 @@
 # vue-simple-file-upload
+
 a simple vue file upload component using XHR
 
 > vue file upload component use XHR
 
 > demo: [http://demo.2017017.xyz/vue-demo/#/vue-simple-file-upload](http://demo.2017017.xyz/vue-demo/#/vue-simple-file-upload)
 
-
 ### 1. Install
 
-``` bash
+```bash
 npm install vue-simple-file-upload
 ```
-
 
 #### 2. Usage
 
@@ -35,10 +34,13 @@ export default {
 ```
 
 ```
-
 <template>
   <div>
-    <vue-simple-upload :options="options" v-on:progress-update="progressUpdate">
+    <vue-simple-upload
+      :options="options"
+      @progress-update="progressUpdate"
+      @file-size-error="fileSizeError"
+    >
     </vue-simple-upload>
   </div>
 </template>
@@ -57,6 +59,9 @@ export default {
   },
 
   methods: {
+    fileSizeError(fileNames) {
+      console.error('Files blow are oversized: ', ...fileNames)
+    },
     progressUpdate(fileInfoList) {
       console.log("upload speed（kb/s）：", fileInfoList[0].uploadSpeed)
       if (fileInfoList[0].type === 'success') {
@@ -81,12 +86,12 @@ export default {
   * default **'Choose File'**
 * **className:**
   * 'choose file' botton class name
-  * type **String**  ps:multiple className can be added, use space split them
+  * type **String** ps:multiple className can be added, use space split them
   * required **No**
   * default **''**
 * **accept**
   * file type accepted
-  * type **String**  ps:same as the 'accept' attribute in \<input\>
+  * type **String** ps:same as the 'accept' attribute in \<input\>
   * required **No**
   * default **'\*'**
 * **multiple**
@@ -94,18 +99,23 @@ export default {
   * type **Boolean**
   * required **No**
   * default **false**
+* **size**
+  * the max file size can be uploaded (Unit: byte)
+  * type **Number**
+  * required **No**
+  * default **0 (∞)**
 * **autoStart**
   * auto upload files after selected
   * type **Boolean**
   * required **No**
   * default **true**
 
-
 #### 4. dynamic upload progress
 
 '$emit' function will send the upload message to its parent component, and this function takes one parameter : fileList (Array)
 
 fileList example:
+
 ```
 [
   {
@@ -121,10 +131,13 @@ fileList example:
 ]
 ```
 
+#### 5. catch oversized error
 
-#### 5. abort
+Use '$emit' function to catch oversized error, just like example in '2. Usage'.
 
-Abort the uploading request by using ```this.$refs.XXX.abort()```
+#### 6. abort
+
+Abort the uploading request by using `this.$refs.XXX.abort()`
 
 eg:
 
@@ -141,14 +154,13 @@ methods: {
   }
   ...
 }
-
 ```
-#### 6. custom Start    // 2017-12-28
+
+#### 7. custom Start // 2017-12-28
 
 If setting "autoStart: false" in your config. You can custom start upload by "id" (default: "all")
 
 eg:
-
 
 ```
 <vue-simple-upload :options="options" v-on:progress-update="progressUpdate" ref="fileUploadSection">
@@ -166,4 +178,4 @@ methods: {
 
 
 // 2017-12-28 TODO: drag upload.
-
+```

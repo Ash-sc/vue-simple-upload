@@ -1,11 +1,12 @@
 {
   "name": "vue-simple-file-upload",
   "description": "a simple vue file upload component",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "author": "Ash",
   "license": "MIT",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot --host 0.0.0.0",
+    "dev":
+      "cross-env NODE_ENV=development webpack-dev-server --open --hot --host 0.0.0.0",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "main": "dist/index.js",
@@ -19,10 +20,7 @@
   "bugs": {
     "url": "https://github.com/Ash-sc/vue-simple-upload/issues"
   },
-  "keywords": [
-    "vue",
-    "upload"
-  ],
+  "keywords": ["vue", "upload"],
   "homepage": "https://github.com/Ash-sc/vue-simple-upload#readme",
   "devDependencies": {
     "babel-core": "^6.26.0",

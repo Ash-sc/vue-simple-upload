@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <h3>Vue Simple Upload</h3>
-    <vue-simple-upload :options="options" v-on:progress-update="progressUpdate" ref="fileUploadComp">
+    <vue-simple-upload
+      :options="options"
+      @progress-update="progressUpdate"
+      @file-size-error="fileSizeError"
+      ref="fileUploadComp"
+    >
     </vue-simple-upload>
     <br>
     <div class="upload-file-info-section" v-show="fileInfoList.length > 0">
@@ -42,7 +47,8 @@ export default {
         url: '/api/files/upload',
         accept: '*',
         multiple: true,
-        autoStart: false
+        // autoStart: false,
+        size: 100000
       },
       imageUrl: '',
       fileInfoList: []
@@ -50,6 +56,10 @@ export default {
   },
 
   methods: {
+    fileSizeError(fileNames) {
+      console.error('file blow are oversized: ', ...fileNames)
+    },
+
     progressUpdate(fileInfoList) {
       this.fileInfoList = fileInfoList
     },
@@ -81,7 +91,8 @@ export default {
   border-radius: 5px;
 }
 
-h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 
@@ -166,7 +177,9 @@ a {
     padding-left: 20px;
   }
 
-  .file-size, .file-progress, .operate {
+  .file-size,
+  .file-progress,
+  .operate {
     display: inline-block;
     width: 100px;
     vertical-align: top;
