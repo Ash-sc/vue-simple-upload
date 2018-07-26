@@ -75,7 +75,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -123,79 +123,79 @@ a {
   display: inline-block;
   margin-top: 40px;
   border: 1px solid #ddd;
+}
 
-  .section-title {
-    margin: 0;
-    font-weight: normal;
-    text-align: left;
-    line-height: 40px;
-    text-indent: 20px;
-    border-bottom: 1px solid #ddd;
-  }
+.section-title {
+  margin: 0;
+  font-weight: normal;
+  text-align: left;
+  line-height: 40px;
+  text-indent: 20px;
+  border-bottom: 1px solid #ddd;
+}
 
-  .file-info-item {
-    position: relative;
-    height: 45px;
-    line-height: 45px;
-    background-color: #f5f7fa;
-    text-align: left;
+.file-info-item {
+  position: relative;
+  height: 45px;
+  line-height: 45px;
+  background-color: #f5f7fa;
+  text-align: left;
+}
 
-    &::not(:first-child) {
-      border-top: 1px solid #dcdfe5;
-    }
-  }
+.file-info-item::not(:first-child) {
+  border-top: 1px solid #dcdfe5;
+}
 
-  .progress-info {
-    position: absolute;
-    top: 0;
-    height: 100%;
-  }
+.progress-info {
+  position: absolute;
+  top: 0;
+  height: 100%;
+}
 
-  .progress-bg {
-    height: 100%;
+.progress-bg {
+  height: 100%;
+}
 
-    &.uploading {
-      background-color: #e5f2ff;
-    }
+.progress-bg.uploading {
+  background-color: #e5f2ff;
+}
 
-    &.success {
-      background-color: #e5ffef;
-    }
+.progress-bg.success {
+  background-color: #e5ffef;
+}
 
-    &.abort {
-      background-color: #fff6e5;
-    }
+.progress-bg.abort {
+  background-color: #fff6e5;
+}
 
-    &.error {
-      background-color: #ffe5ea;
-    }
-  }
+.progress-bg.error {
+  background-color: #ffe5ea;
+}
 
-  .file-name {
-    display: inline-block;
-    width: 480px;
-    padding-left: 20px;
-  }
+.file-name {
+  display: inline-block;
+  width: 480px;
+  padding-left: 20px;
+}
 
-  .file-size,
-  .file-progress,
-  .operate {
-    display: inline-block;
-    width: 100px;
-    vertical-align: top;
-  }
+.file-size,
+.file-progress,
+.operate {
+  display: inline-block;
+  width: 100px;
+  vertical-align: top;
+}
 
-  .operate {
-    width: 70px;
-    height: 45px;
+.operate {
+  width: 70px;
+  height: 45px;
+}
 
-    .fa {
-      width: 20px;
-      height: 20px;
-      line-height: 20px;
-      margin-top: 12px;
-      text-align: center;
-    }
-  }
+.fa {
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  margin-top: 12px;
+  text-align: center;
 }
 </style>

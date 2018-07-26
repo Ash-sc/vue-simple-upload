@@ -46,6 +46,7 @@ export default {
         {
           url: '',
           formData: {},
+          headers: {},
           multiple: false,
           btnContent: 'Choose File',
           autoStart: true,
@@ -127,6 +128,7 @@ export default {
     // xhr request
     xhrUpload(fileInfo, id) {
       const userFormData = this.option.formData || {} // other custom form data.
+      const userHeaders = this.option.headers || {} // custom headers.
       const { xhrObj } = this
 
       // define a new formData for xhr
@@ -182,6 +184,10 @@ export default {
 
       // start xhr
       xhrObj[id].open('POST', this.option.url, true)
+      // set headers
+      Object.keys(userHeaders).forEach(key => {
+        xhrObj[id].setRequestHeader(key, userHeaders[key])
+      })
       xhrObj[id].send(formData)
     },
 
@@ -260,12 +266,11 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 .file-upload-body {
   display: inline-block;
-
-  .file-selector {
-    display: none !important;
-  }
+}
+.file-upload-body .file-selector {
+  display: none !important;
 }
 </style>

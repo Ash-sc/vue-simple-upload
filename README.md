@@ -109,6 +109,16 @@ export default {
   * type **Boolean**
   * required **No**
   * default **true**
+* **formData**
+  * custom form-data
+  * type **Object**
+  * required **No**
+  * default **{}**
+* **headers**
+  * custom headers
+  * type **Object**
+  * required **No**
+  * default **{}**
 
 #### 4. dynamic upload progress
 
